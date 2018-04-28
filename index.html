@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div class="container">
+      <svg>{{a}}x{{b}}={{a*b}}{{a?3:4}}</svg>
+    </div>
+    <script type="text/javascript">
+      var html = document.querySelector(".container")
+      console.dir(html);
+      var regExpStr=new RegExp("\n|\ ","g")
+      var splitStr = new RegExp("{{|}}","g")
+      html=html.textContent.replace(regExpStr,"");
+      var arr=html.split(splitStr)
+      console.log(arr);
+      var options= {a:2,b:1}
+      var tempArr=[];
+      // var a=2,b=1;
+      //1,this只有在function中才能省略，eval中不行
+      //2,
+      function foo(arr,options){
+            for (item in arr){
+                try{
+                  tempArr.push(new Function("console.log(this);return "+arr[item]).call(options))//可执行的语句执行后放入结果字符串
+                }catch(e){
+                  tempArr.push(arr[item])//非正常执行的语句直接原样放进结果字符串
+                }
+            }
+            return tempArr.join("")
+      }
+      var tempStr=foo(arr,options)
+      // var tempStr=foo(arr).bind(options)();
+      // foo(arr)
+      console.log(tempStr);
+    </script>
+  </body>
+</html>
