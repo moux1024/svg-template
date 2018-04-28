@@ -712,20 +712,23 @@
     结果
     <svg id="result"></svg>
     <script type="text/javascript">
-      var html = document.querySelector(".container")
-      console.dir(html);
-      var regExpStr=new RegExp("\n","g")//删除换行
-      var regExpStr1 = new RegExp("&gt;","g");//恢复“>”
-      var regExpStr2 = new RegExp("&lt;","g");//恢复“<”
-      var splitStr = new RegExp("{{|}}","g")//根据双花括号拆分语句
-      html=html.innerHTML.replace(regExpStr,"").replace(regExpStr1,">").replace(regExpStr2,"<");
-      var arr=html.split(splitStr)
+      var html = document.querySelector(".container");
       var options= {
         batteryvalue:2,
         batteryvalue1:100
+      };
+      console.dir(html);
+      function htmlFormat(html){
+        var regExpStr=new RegExp("\n","g")//删除换行
+        var regExpStr1 = new RegExp("&gt;","g");//恢复“>”
+        var regExpStr2 = new RegExp("&lt;","g");//恢复“<”
+        var splitStr = new RegExp("{{|}}","g")//根据双花括号拆分语句
+        html=html.innerHTML.replace(regExpStr,"").replace(regExpStr1,">").replace(regExpStr2,"<");
+        return html.split(splitStr)
       }
-      var tempArr=[];
-      function foo(arr,options){
+      function foo(html,options){
+        var tempArr=[];
+        var arr = htmlFormat(html);
             for (item in arr){
                 try{
                   with(options){
@@ -737,7 +740,7 @@
             }
             return tempArr.join("")
       }
-      var tempStr=foo(arr,options);
+      var tempStr=foo(html,options);
       console.log(tempStr);
       document.getElementById("Layer_1").innerHTML=tempStr;
     </script>
